@@ -40,6 +40,7 @@ async function showpos(position) {
      <p>${value.location.localtime}</p>
      <p>Temperature: ${value.current.temp_c}°C</p>
      `;
+     
 };
 
 async function getcityData(cityName){
@@ -73,17 +74,12 @@ button.addEventListener('click', async ()=>{
 function changeBg(val){
 
     let bg = document.querySelector("body");
-    if(val>20){
+    if(val>21 || val<5){
         bg.style.backgroundImage = "url('./img/night.jpg')";
-        bg.style.color= "white";
     }
     else if(val>16){
-        bg.style.backgroundImage = "url('./img/morning_wallpaper.jpg')";
+        bg.style.backgroundImage = "url('./img/sunset.jpg')";
     }
-    else if(val>8) {
-        bg.style.backgroundImage = "url('./img/landscape-wallpaper.jpg')";
-    }
-
 }   
 
 
