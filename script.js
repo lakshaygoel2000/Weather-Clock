@@ -1,4 +1,4 @@
-// const button = document.getElementById("stop");
+const API_KEY="c85fadde00fb46a8be7165521241609";
 const loc = document.getElementById("location");
 const title = document.getElementsByClassName("title");
 const input = document.getElementById("location-input");
@@ -7,9 +7,7 @@ const button = document.getElementById("search");
 function showTime(){
     const currentTime = new Date();
     const time = `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`
-    // console.log(time);
     document.getElementById("time").innerText = time; 
-    // document.getElementsByClassName("title-name").innerText = `Clock ${currentTime.getHours()}:${currentTime.getMinutes()}`
     changeBg(currentTime.getHours());
 }
 showTime();
@@ -24,7 +22,7 @@ area();
 async function getData(lat, long){
     const promise = await
     fetch(
-        `https://api.weatherapi.com/v1/current.json?key=c85fadde00fb46a8be7165521241609&q=${lat}+${long}&aqi=no`
+        `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat}+${long}&aqi=no`
     );
     return await promise.json()
 }
@@ -33,7 +31,6 @@ async function showpos(position) {
     const lat = position.coords.latitude;
     const long = position.coords.longitude;
     const value = await getData(lat,long);
-    // console.log(value);
     loc.innerText = `${value.location.name}, ${value.location.country}`;
      document.getElementById("user-loc").innerHTML = `
      <h4>${value.location.name}, ${value.location.country} </h4>
@@ -42,18 +39,18 @@ async function showpos(position) {
      `;
      
 };
+let count=1;
 
 async function getcityData(cityName){
     const promise = await
     fetch(
-        `https://api.weatherapi.com/v1/current.json?key=c85fadde00fb46a8be7165521241609&q=${cityName}&aqi=no`
+        `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&aqi=no`
     );
     return await promise.json()
 };
 
 // Event Listener that shows the current weather of the city
 
-let count=1;
 button.addEventListener('click', async ()=>{
     const value = input.value;
     const result = await getcityData(value);
@@ -66,8 +63,13 @@ button.addEventListener('click', async ()=>{
      <p>Temperature: ${result.current.temp_c}°C</p>
      `;
     document.getElementById('extra').appendChild(el);
-    //  count++;
-
+    count++;
+    if(count === 9){
+        input.disabled = true;
+        button.disabled = true;
+    }    
+    input.value = '';
+    input.focus();
 });
 
 // Function that changes background color based on time of day
@@ -83,9 +85,6 @@ function changeBg(val){
 }   
 
 
-// setTimeout(()=> console.log('hi'),6000) // gives output only ones
 const interval = setInterval(showTime,1000);
-// button.addEventListener('click', ()=>{
-//     clearInterval(interval);
-// });
+
 
